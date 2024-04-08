@@ -1,0 +1,7 @@
+Flask==2.3.3
+Flask-Login==0.6.3
+flask-restapi==0.3.1
+Flask-WTF==1.2.1
+python-dotenv==1.0.1
+SQLAlchemy==2.0.29
+SQLAlchemy-serializer==1.4.12
