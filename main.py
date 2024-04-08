@@ -1,4 +1,8 @@
 from flask import Flask, request
+import data.db_session as db_session
+
+from data.users import User
+from data.notes import Note
 
 import os
 import dotenv
@@ -10,6 +14,7 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', default='flask_secret_key')
 
 
 def main():
+    db_session.global_init('db/base.db')
     app.run(port=5000)
 
 
