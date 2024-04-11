@@ -1,19 +1,23 @@
-from flask import Flask, request, render_template, redirect
-from flask_login import LoginManager, current_user, login_user, login_required, logout_user
+from flask import Flask, render_template, redirect
+from flask_login import LoginManager, login_user, login_required, logout_user
+from flask_restful import Api
 import data.db_session as db_session
 
 from data.users import User
-from data.notes import Note
+
+import data.users_resources as users_resources
 
 from forms.user import RegisterForm, LoginForm
 
 import os
 import dotenv
+import requests
 
 dotenv.load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', default='flask_secret_key')
+api = Api(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -26,6 +30,10 @@ def load_user(user_id):
 
 def main():
     db_session.global_init('db/base.db')
+
+    api.add_resource(users_resources.UsersListResource, '/api/users')
+    api.add_resource(users_resources.UsersResource, '/api/users/<int:user_id>')
+
     app.run(port=5000)
 
 
@@ -76,7 +84,7 @@ def register():
             'nick': form.nick.data,
             'password': form.password.data
         }
-        # requests.post('http://localhost:5000/api/v2/users', json=user_params)
+        requests.post('http://localhost:5000/api/users', json=user_params)
         return redirect('/login')
     return render_template('register.html', title='Регистрация', form=form)
 
