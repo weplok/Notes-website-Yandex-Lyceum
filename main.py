@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect
-from flask_login import LoginManager, login_user, login_required, logout_user
+from flask_login import LoginManager, current_user, login_user, login_required, logout_user
 from flask_restful import Api
 import data.db_session as db_session
 
@@ -48,7 +48,10 @@ def main():
 @app.route('/')
 @app.route('/index')
 def index():
-    return app.config.get('SECRET_KEY')
+    user = current_user
+    if not user.is_authenticated:
+        return render_template('index.html', title='Заметки')
+    return 'register'
 
 
 @app.route('/login', methods=['GET', 'POST'])

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="px-4 pt-5 my-5 text-center border-bottom">
+    <h1 class="display-4 fw-bold text-body-emphasis">Кастомные заметки всегда под рукой.</h1>
+    <div class="col-lg-6 mx-auto">
+      <p class="lead mb-4">Добро пожаловать на наш сайт! Здесь вы сможете легко писать заметки,
+        удобно их организовывать и настроить экран с заметками по своему вкусу.
+        Делайте себе уютно и пишите всё, что вам нужно!</p>
+      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
+        <a href="/register"><button type="button" class="btn btn-primary btn-lg px-4 me-sm-3">Зарегистрироваться</button></a>
+        <a href="/login"><button type="button" class="btn btn-outline-secondary btn-lg px-4">Войти</button></a>
+      </div>
+    </div>
+    <div class="overflow-hidden" style="max-height: 30vh;">
+      <div class="container px-5">
+        <img src="static/images/notes_in_index_page.jpg" class="img-fluid border rounded-3 shadow-lg mb-4" alt="Пример дизайна" loading="lazy">
+      </div>
+    </div>
+  </div>
+{% endblock %}
