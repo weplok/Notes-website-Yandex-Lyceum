@@ -4,8 +4,10 @@ from flask_restful import Api
 import data.db_session as db_session
 
 from data.users import User
+from data.notes import Note
 
 import data.users_resources as users_resources
+import data.notes_resources as notes_resources
 
 from forms.user import RegisterForm, LoginForm
 
@@ -33,6 +35,9 @@ def main():
 
     api.add_resource(users_resources.UsersListResource, '/api/users')
     api.add_resource(users_resources.UsersResource, '/api/users/<int:user_id>')
+
+    api.add_resource(notes_resources.NoteListResource, '/api/notes')
+    api.add_resource(notes_resources.NoteResource, '/api/notes/<int:note_id>')
 
     app.run(port=5000)
 
