@@ -6,6 +6,7 @@ import data.db_session as db_session
 from data.users import User
 from data.notes import Note
 
+import data.errors_handler as errors_handler
 import data.users_resources as users_resources
 import data.notes_resources as notes_resources
 
@@ -32,6 +33,8 @@ def load_user(user_id):
 
 def main():
     db_session.global_init('db/base.db')
+
+    app.register_blueprint(errors_handler.blueprint)
 
     api.add_resource(users_resources.UsersListResource, '/api/users')
     api.add_resource(users_resources.UsersResource, '/api/users/<int:user_id>')
