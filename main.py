@@ -1,6 +1,7 @@
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, request
 from flask_login import LoginManager, current_user, login_user, login_required, logout_user
 from flask_restful import Api
+from werkzeug.utils import secure_filename
 import data.db_session as db_session
 
 from data.users import User
@@ -11,9 +12,11 @@ import data.users_resources as users_resources
 import data.notes_resources as notes_resources
 
 from forms.user import RegisterForm, LoginForm
+from forms.notes import CreateNoteForm, EditNoteForm
 
 import os
 import dotenv
+import random
 import requests
 
 dotenv.load_dotenv()
@@ -60,15 +63,19 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+
     if form.validate_on_submit():
         db_sess = db_session.create_session()
         user = db_sess.query(User).filter(User.nick == form.nick.data).first()
+        # Если юзер ввёл верный логин/пароль - система авторизует его
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
             return redirect("/")
+        # Иначе высветится ошибка о неверном логине/пароле
         return render_template('login.html',
                                message="Неправильный логин или пароль",
                                form=form)
+
     return render_template('login.html', title='Авторизация', form=form)
 
 
@@ -82,7 +89,9 @@ def logout():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
+
     if form.validate_on_submit():
+        # Валидируются пароли и почта, проверяется, есть ли добавляемый юзер в системе
         if form.password.data != form.password_again.data:
             return render_template('register.html', title='Регистрация',
                                    form=form,
@@ -98,9 +107,48 @@ def register():
             'nick': form.nick.data,
             'password': form.password.data
         }
+
+        # Пользователь создаётся, юзера перекидывает на страницу авторизации
         requests.post('http://localhost:5000/api/users', json=user_params)
         return redirect('/login')
+
     return render_template('register.html', title='Регистрация', form=form)
+
+
+@app.route('/create_note', methods=['GET', 'POST'])
+def create_note():
+    form = CreateNoteForm()
+
+    if request.method == "GET":
+        # Установить значение цвета заметки на дефолтное из настроек пользователя
+        form.background_color.data = current_user.notes_background_color
+
+    if form.validate_on_submit() and request.method == 'POST':
+        note_params = {
+            'title': form.title.data,
+            'text': form.text.data,
+            'background_color': form.background_color.data
+        }
+        # Формируется ссылка на картинку
+        if 'background_image' in request.files:
+            # Если юзер загрузил картинку, она получит случайное имя (во избежание загрузки картинок с одинаковыми
+            # названиями) и сохранится в static/user_images
+            file = request.files['background_image']
+            filename = secure_filename(file.filename)
+            filename = f"{random.randint(1000000, 9999999)}.{filename.split('.')[-1]}"
+            file.save(os.path.join('static/user_images', filename))
+            note_params['background_image'] = f'static/user_images/{filename}'
+        else:
+            # Если юзер не загрузил картинку, будет использоваться стандартная
+            note_params['background_image'] = 'static/user_images/default.jpg'
+        # Владельцем заметки назначается авторизованный в данный момент юзер
+        note_params['owner_user'] = current_user.id
+
+        # Заметка создаётся, юзер возвращается на главную страницу со всеми заметками
+        requests.post('http://localhost:5000/api/notes', json=note_params)
+        return redirect('/')
+
+    return render_template('create_note.html', title='Новая заметка', form=form)
 
 
 if __name__ == '__main__':

@@ -21,6 +21,8 @@ parser = reqparse.RequestParser()
 parser.add_argument('owner_user', required=True)
 parser.add_argument('title', required=True)
 parser.add_argument('text', required=True)
+parser.add_argument('background_image', required=True)
+parser.add_argument('background_color', required=True)
 
 
 def abort_if_note_not_found(note_id):
@@ -61,6 +63,8 @@ class NoteListResource(Resource):
             owner_user=int(args['owner_user']),
             title=str(args['title']),
             text=str(args['text']),
+            background_image=str(args['background_image']),
+            background_color=str(args['background_color'])
         )
         session.add(note)
         session.commit()
