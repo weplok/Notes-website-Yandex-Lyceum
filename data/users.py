@@ -14,8 +14,11 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     surname = sqlalchemy.Column(sqlalchemy.String)
     name = sqlalchemy.Column(sqlalchemy.String)
     nick = sqlalchemy.Column(sqlalchemy.String, unique=True)
-    # notes = orm.relationship("Notes", back_populates='user')
     hashed_password = sqlalchemy.Column(sqlalchemy.String)
+
+    background_color = sqlalchemy.Column(sqlalchemy.String, default='#ffffff')
+    notes_background_color = sqlalchemy.Column(sqlalchemy.String, default='#cdf6ff')
+    notes_border_color = sqlalchemy.Column(sqlalchemy.String, default='#aed0d8')
 
     def set_password(self, password):
         self.hashed_password = generate_password_hash(password)
@@ -25,3 +28,7 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
 
     def __repr__(self):
         return f"<User> {self.id} {self.surname} {self.name}"
+
+# Для миграции БД выполнить:
+# alembic revision --autogenerate -m "comment"
+# alembic upgrade head

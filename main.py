@@ -49,9 +49,11 @@ def main():
 @app.route('/index')
 def index():
     user = current_user
+    # Если пользователь не авторизован - покажем страницу-презентацию сайта
     if not user.is_authenticated:
         return render_template('index.html', title='Заметки')
-    return 'register'
+    # Если авторизован - покажем кастомную страницу с заметками пользователя
+    return render_template('notes.html', user=current_user, title='Заметки')
 
 
 @app.route('/login', methods=['GET', 'POST'])
