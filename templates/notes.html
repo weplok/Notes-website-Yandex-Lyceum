@@ -15,12 +15,12 @@
           <div class="card shadow-sm">
             <img src="{{ note.background_image }}" class="bd-placeholder-img card-img-top">
             <div style="background-color: {{ note.background_color }}; border-radius: 0 0 calc(0.25rem - 1px) calc(0.25rem - 1px)" class="card-body">
-              <h4>{{ note.title }}</h4>
+              <h6>{{ note.title }}</h6>
               <p class="card-text">{{ note.text[:128] }}{% if note.text|length > 128 %}...{% endif %}</p>
               <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Читать</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Изменить</button>
+                <div class=" btn-group">
+                  <a href="/"><button type="button" class="btn btn-sm btn-outline-secondary" style="border-radius: calc(0.25rem - 1px) 0 0 calc(0.25rem - 1px)">Читать</button></a>
+                  <a href="/edit_note/{{ note.id }}/{{ current_user.id }}"><button type="button" class="btn btn-sm btn-outline-secondary" style="border-radius: 0 calc(0.25rem - 1px) calc(0.25rem - 1px) 0">Изменить</button></a>
                 </div>
                 <small class="text-body-secondary">{{ note.create_date }}</small>
               </div>
