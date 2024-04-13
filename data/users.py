@@ -18,7 +18,6 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
 
     background_color = sqlalchemy.Column(sqlalchemy.String, default='#ffffff')
     notes_background_color = sqlalchemy.Column(sqlalchemy.String, default='#cdf6ff')
-    notes_border_color = sqlalchemy.Column(sqlalchemy.String, default='#aed0d8')
 
     def set_password(self, password):
         self.hashed_password = generate_password_hash(password)

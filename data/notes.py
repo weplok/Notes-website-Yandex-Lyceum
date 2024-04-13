@@ -18,7 +18,6 @@ class Note(SqlAlchemyBase, SerializerMixin):
 
     background_image = sqlalchemy.Column(sqlalchemy.String, default='static/user_images/default.jpg')
     background_color = sqlalchemy.Column(sqlalchemy.String)
-    border_color = sqlalchemy.Column(sqlalchemy.String)
 
 # Для миграции БД выполнить:
 # alembic revision --autogenerate -m "comment"

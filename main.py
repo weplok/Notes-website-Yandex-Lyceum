@@ -53,7 +53,8 @@ def index():
     if not user.is_authenticated:
         return render_template('index.html', title='Заметки')
     # Если авторизован - покажем кастомную страницу с заметками пользователя
-    return render_template('notes.html', user=current_user, title='Заметки')
+    notes = requests.get('http://localhost:5000/api/notes').json()['notes']
+    return render_template('notes.html', user=current_user, notes=notes, title='Заметки')
 
 
 @app.route('/login', methods=['GET', 'POST'])

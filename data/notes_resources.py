@@ -8,12 +8,12 @@ from .notes import Note
 note_params = (
     'id',
     'owner_user',
-    'user.name',
-    'user.surname',
     'title',
     'text',
     'create_date',
     'is_active',
+    'background_image',
+    'background_color'
 )
 
 

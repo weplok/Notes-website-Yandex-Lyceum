@@ -5,4 +5,32 @@
 <style>
   body { background-color: {{ current_user.background_color }}; }
 </style>
+<div class="album py-5 bg-body-tertiary">
+    <div class="container">
+
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+        {% for note in notes %}
+        <div class="col">
+          <div class="card shadow-sm">
+            <img src="{{ note.background_image }}" class="bd-placeholder-img card-img-top">
+            <div style="background-color: {{ note.background_color }}; border-radius: 0 0 calc(0.25rem - 1px) calc(0.25rem - 1px)" class="card-body">
+              <h4>{{ note.title }}</h4>
+              <p class="card-text">{{ note.text[:128] }}{% if note.text|length > 128 %}...{% endif %}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-secondary">Читать</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary">Изменить</button>
+                </div>
+                <small class="text-body-secondary">{{ note.create_date }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
+
+      </div>
+    </div>
+  </div>
 {% endblock %}
