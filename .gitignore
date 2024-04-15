@@ -156,4 +156,5 @@ cython_debug/
 
 # PyCharm
 .idea/
-dev_notes.txt
+static/user_images/*
+!static/user_images/default.jpg

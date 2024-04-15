@@ -135,9 +135,13 @@ def create_note():
             # названиями) и сохранится в static/user_images
             file = request.files['background_image']
             filename = secure_filename(file.filename)
-            filename = f"{random.randint(1000000, 9999999)}.{filename.split('.')[-1]}"
-            file.save(os.path.join('static/user_images', filename))
-            note_params['background_image'] = f'static/user_images/{filename}'
+            frmt = filename.split('.')[-1]
+            if frmt in ['jpg', 'jpeg', 'png', 'gif']:
+                filename = f"{random.randint(1000000, 9999999)}.{frmt}"
+                file.save(os.path.join('static/user_images', filename))
+                note_params['background_image'] = f'static/user_images/{filename}'
+            else:
+                note_params['background_image'] = 'static/user_images/default.jpg'
         else:
             # Если юзер не загрузил картинку, будет использоваться стандартная
             note_params['background_image'] = 'static/user_images/default.jpg'
