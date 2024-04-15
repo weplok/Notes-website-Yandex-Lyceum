@@ -22,7 +22,7 @@
                   <a href="/"><button type="button" class="btn btn-sm btn-outline-secondary" style="border-radius: calc(0.25rem - 1px) 0 0 calc(0.25rem - 1px)">Читать</button></a>
                   <a href="/edit_note/{{ note.id }}/{{ current_user.id }}"><button type="button" class="btn btn-sm btn-outline-secondary" style="border-radius: 0 calc(0.25rem - 1px) calc(0.25rem - 1px) 0">Изменить</button></a>
                 </div>
-                <small class="text-body-secondary">{{ note.create_date }}</small>
+                <small class="text-body-secondary">{{ note.create_date[:-3] }}</small>
               </div>
             </div>
           </div>
