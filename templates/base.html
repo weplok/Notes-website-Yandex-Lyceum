@@ -8,6 +8,9 @@
         integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
         crossorigin="anonymous">
   <link rel="stylesheet" href="../../static/css/style.css">
+  <style>
+    body { background-color: {{ current_user.background_color }}; }
+  </style>
 </head>
 <body>
 
@@ -26,8 +29,12 @@
       <a class="navbar-brand" href="/logout">{{ current_user.surname }} {{ current_user.name }}</a>
       {% else %}
       <div class="text-end">
-        <a href="/login"><button type="button" class="btn btn-light me-2">Войти</button></a>
-        <a href="/register"><button type="button" class="btn btn-warning">Зарегистрироваться</button></a>
+        <a href="/login">
+          <button type="button" class="btn btn-light me-2">Войти</button>
+        </a>
+        <a href="/register">
+          <button type="button" class="btn btn-warning">Зарегистрироваться</button>
+        </a>
       </div>
       {% endif %}
     </div>

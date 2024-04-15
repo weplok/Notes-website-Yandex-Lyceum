@@ -11,7 +11,7 @@ import data.errors_handler as errors_handler
 import data.users_resources as users_resources
 import data.notes_resources as notes_resources
 
-from forms.user import RegisterForm, LoginForm
+from forms.user import RegisterForm, LoginForm, EditProfileForm
 from forms.notes import CreateNoteForm, EditNoteForm
 
 import os
@@ -113,6 +113,29 @@ def register():
         return redirect('/login')
 
     return render_template('register.html', title='Регистрация', form=form)
+
+
+@login_required
+@app.route('/profile/<int:user_id>', methods=['GET', 'POST'])
+def edit_profile(user_id):
+    if user_id != current_user.id:
+        return 'Вы не можете редактировать чужой профиль'
+    form = EditProfileForm()
+    session = db_session.create_session()
+    user = session.query(User).filter(User.id == user_id).first()
+    if request.method == 'GET':
+        form.name.data = user.name
+        form.surname.data = user.surname
+        form.background_color.data = user.background_color
+        form.notes_background_color.data = user.notes_background_color
+    if form.validate_on_submit():
+        user.name = form.name.data
+        user.surname = form.surname.data
+        user.background_color = form.background_color.data
+        user.notes_background_color = form.notes_background_color.data
+        session.commit()
+        return redirect('/')
+    return render_template('edit_profile.html', title='Профиль', form=form)
 
 
 @app.route('/create_note', methods=['GET', 'POST'])

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 align="center">Редактировать профиль</h1>
+<form action="" method="post">
+  {{ form.hidden_tag() }}
+  <p>
+    {{ form.name.label }}<br>
+    {{ form.name(class="form-control") }}<br>
+    {% for error in form.name.errors %}
+  <div class="alert alert-danger" role="alert">
+    {{ error }}
+  </div>
+  {% endfor %}
+  </p>
+  <p>
+    {{ form.surname.label }}<br>
+    {{ form.surname(class="form-control") }}<br>
+    {% for error in form.surname.errors %}
+  <div class="alert alert-danger" role="alert">
+    {{ error }}
+  </div>
+  {% endfor %}
+  </p>
+  <p>
+    {{ form.background_color.label }}<br>
+    {{ form.background_color(class="form-control") }}<br>
+    {% for error in form.background_color.errors %}
+  <div class="alert alert-danger" role="alert">
+    {{ error }}
+  </div>
+  {% endfor %}
+  </p>
+  <p>
+    {{ form.notes_background_color.label }}<br>
+    {{ form.notes_background_color(class="form-control") }}<br>
+    {% for error in form.notes_background_color.errors %}
+  <div class="alert alert-danger" role="alert">
+    {{ error }}
+  </div>
+  {% endfor %}
+  </p>
+  <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+  <div>{{ message }}</div>
+</form>
+{% endblock %}

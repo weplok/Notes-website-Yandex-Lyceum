@@ -11,6 +11,8 @@ user_params = (
     'name',
     'nick',
     'hashed_password',
+    'background_color',
+    'notes_background_color'
 )
 
 
@@ -19,6 +21,8 @@ parser.add_argument('name', required=True)
 parser.add_argument('surname', required=True)
 parser.add_argument('nick', required=True)
 parser.add_argument('password', required=True)
+parser.add_argument('background_color', required=True)
+parser.add_argument('notes_background_color', required=True)
 
 
 def abort_if_user_not_found(user_id):
