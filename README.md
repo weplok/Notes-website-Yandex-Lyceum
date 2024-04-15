@@ -16,6 +16,10 @@ pip install -r requirements/prod.txt
 ```
 
 ```bash
+alembic upgrade head
+```
+
+```bash
 ren .env.example .env
 ```
 
