@@ -57,7 +57,11 @@ def index():
         return render_template('index.html', title='Заметки')
     # Если авторизован - покажем кастомную страницу с заметками пользователя
     notes = requests.get('http://localhost:5000/api/notes').json()['notes']
-    return render_template('notes.html', user=current_user, notes=notes, title='Заметки')
+
+    # Булевая функция. True, если есть скрытые заметки, чтобы на странице отобразить текст "Скрытые заметки"
+    is_hide_notes = not all([note['is_active'] for note in notes]) and len(notes) != 0
+
+    return render_template('notes.html', user=current_user, notes=notes, is_hide_notes=is_hide_notes, title='Заметки')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -176,6 +180,21 @@ def create_note():
         return redirect('/')
 
     return render_template('create_note.html', title='Новая заметка', form=form)
+
+
+@app.route('/edit_note/<int:note_id>/<int:user_id>')
+def edit_note():
+    pass
+
+
+@app.route('/hide_note/<int:note_id>/<int:user_id>')
+def hide_note(note_id, user_id):
+    if user_id == current_user.id:
+        session = db_session.create_session()
+        note = session.query(Note).filter(Note.id == note_id).first()
+        note.is_active = not note.is_active
+        session.commit()
+    return redirect('/')
 
 
 if __name__ == '__main__':

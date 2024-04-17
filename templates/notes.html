@@ -3,31 +3,86 @@
 {% block content %}
 {% set current_user = user %}
 <div class="album py-5 bg-body-tertiary">
-    <div class="container">
+  <div class="container">
 
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
-        {% for note in notes %}
-        <div class="col">
-          <div class="card shadow-sm">
-            <img src="{{ note.background_image }}" class="bd-placeholder-img card-img-top">
-            <div style="background-color: {{ note.background_color }}; border-radius: 0 0 calc(0.25rem - 1px) calc(0.25rem - 1px)" class="card-body">
-              <h6>{{ note.title }}</h6>
-              <p class="card-text">{{ note.text[:128] }}{% if note.text|length > 128 %}...{% endif %}</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class=" btn-group">
-                  <a href="/"><button type="button" class="btn btn-sm btn-outline-secondary" style="border-radius: calc(0.25rem - 1px) 0 0 calc(0.25rem - 1px)">Читать</button></a>
-                  <a href="/edit_note/{{ note.id }}/{{ current_user.id }}"><button type="button" class="btn btn-sm btn-outline-secondary" style="border-radius: 0 calc(0.25rem - 1px) calc(0.25rem - 1px) 0">Изменить</button></a>
-                </div>
-                <small class="text-body-secondary">{{ note.create_date[:-3] }}</small>
+      {% for note in notes %}
+      {% if note.is_active %}
+      <div class="col">
+        <div class="card shadow-sm">
+          <img src="{{ note.background_image }}" class="bd-placeholder-img card-img-top">
+          <div style="background-color: {{ note.background_color }}; border-radius: 0 0 calc(0.25rem - 1px) calc(0.25rem - 1px)"
+               class="card-body">
+            <h6>{{ note.title }}</h6>
+            <p class="card-text">{{ note.text[:128] }}{% if note.text|length > 128 %}...{% endif %}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class=" btn-group">
+                <a href="/">
+                  <button type="button" class="btn btn-sm btn-outline-secondary"
+                          style="border-radius: calc(0.25rem - 1px) 0 0 calc(0.25rem - 1px)">Читать
+                  </button>
+                </a>
+                <a href="/edit_note/{{ note.id }}/{{ current_user.id }}">
+                  <button type="button" class="btn btn-sm btn-outline-secondary"
+                          style="border-radius: 0">Изменить
+                  </button>
+                </a>
+                <a href="/hide_note/{{ note.id }}/{{ current_user.id }}">
+                  <button type="button" class="btn btn-sm btn-outline-secondary"
+                          style="border-radius: 0 calc(0.25rem - 1px) calc(0.25rem - 1px) 0">👁
+                  </button>
+                </a>
               </div>
+              <small class="text-body-secondary">{{ note.create_date[:-9]|replace("-", ".") }}</small><br>
+              <small class="text-body-secondary" style="display: block;">{{ note.create_date[-8:-3] }}</small>
             </div>
           </div>
         </div>
-        {% endfor %}
-
-
       </div>
+      {% endif %}
+      {% endfor %}
     </div>
   </div>
+</div>
+
+{% if is_hide_notes%}
+<div class="border-top">
+  <h2 class="display-5 fw-bold text-body-emphasis" align="center">Скрытые заметки</h2>
+</div>
+{% endif %}
+
+<div class="album py-5 bg-body-tertiary">
+  <div class="container">
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+      {% for note in notes %}
+      {% if not note.is_active %}
+      <div class="col">
+        <div class="card shadow-sm">
+          <img src="{{ note.background_image }}" class="bd-placeholder-img card-img-top">
+          <div style="background-color: {{ note.background_color }}; border-radius: 0 0 calc(0.25rem - 1px) calc(0.25rem - 1px)"
+               class="card-body">
+            <h6>{{ note.title }}</h6>
+            <p class="card-text">{{ note.text[:128] }}{% if note.text|length > 128 %}...{% endif %}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class=" btn-group">
+                <a href="/hide_note/{{ note.id }}/{{ current_user.id }}">
+                  <button type="button" class="btn btn-sm btn-outline-secondary"
+                          style="border-radius: calc(0.25rem - 1px)">👁
+                  </button>
+                </a>
+              </div>
+              <small class="text-body-secondary">{{ note.create_date[:-9]|replace("-", ".") }}</small>
+              <small class="text-body-secondary">{{ note.create_date[-8:-3] }}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
 {% endblock %}
