@@ -182,6 +182,14 @@ def create_note():
     return render_template('create_note.html', title='Новая заметка', form=form)
 
 
+@app.route('/note/<int:note_id>/<int:user_id>')
+def read_note(note_id, user_id):
+    if user_id == current_user.id:
+        note = requests.get(f'http://localhost:5000/api/notes/{note_id}').json()['note']
+        return render_template('read_note.html', note=note, title=note['title'])
+    return redirect('/')
+
+
 @app.route('/edit_note/<int:note_id>/<int:user_id>')
 def edit_note():
     pass

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="px-2 pt-3 my-5 text-center rounded-3 border shadow-lg" style="background-color: {{ note.background_color }};">
+    <h1 class="display-4 fw-bold text-body-emphasis">{{ note.title }}</h1>
+    <div class="col-lg-6 mx-auto">
+      <p class="lead mb-4">{{ note.text }}</p>
+    </div>
+    <div class="overflow-hidden">
+      <div class="container px-5" style="padding-bottom: 10px;">
+        <img src="/{{ note.background_image }}" class="border rounded-3 shadow-lg" alt="Ваше изображение для заметки"
+             width="700" height="500" loading="lazy">
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
