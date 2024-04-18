@@ -187,6 +187,13 @@ def edit_note():
     pass
 
 
+@app.route('/delete_note/<int:note_id>/<int:user_id>')
+def delete_note(note_id, user_id):
+    if user_id == current_user.id:
+        requests.delete(f'http://localhost:5000/api/notes/{note_id}')
+    return redirect('/')
+
+
 @app.route('/hide_note/<int:note_id>/<int:user_id>')
 def hide_note(note_id, user_id):
     if user_id == current_user.id:
