@@ -187,9 +187,9 @@ def create_note():
             if frmt in ["jpg", "jpeg", "png", "gif"]:
                 filename = f"{random.randint(1000000, 9999999)}.{frmt}"
                 file.save(os.path.join("static/user_images", filename))
-                note_params["background_image"] = f"static/user_images/" f"{filename}"
+                note_params["background_image"] = f"static/user_images/{filename}"
             else:
-                note_params["background_image"] = "static/user_images/" "default.jpg"
+                note_params["background_image"] = "static/user_images/default.jpg"
         else:
             # Если юзер не загрузил картинку, будет использоваться стандартная
             note_params["background_image"] = "static/user_images/default.jpg"
@@ -207,13 +207,41 @@ def create_note():
 def read_note(note_id, user_id):
     if user_id == current_user.id:
         note = requests.get(f"http://localhost:5000/api/notes/{note_id}").json()["note"]
-        return render_template("read_note.html", note=note, title=note["title"])
+        return render_template(
+            "read_note.html", note=note, current_user=current_user, title=note["title"]
+        )
     return redirect("/")
 
 
-@app.route("/edit_note/<int:note_id>/<int:user_id>")
-def edit_note():
-    pass
+@app.route("/edit_note/<int:note_id>/<int:user_id>", methods=["GET", "POST"])
+def edit_note(note_id, user_id):
+    if user_id != current_user.id:
+        return "Вы можете редактировать только свои заметки"
+    form = EditNoteForm()
+    session = db_session.create_session()
+    note = session.query(Note).filter(Note.id == note_id).first()
+    if request.method == "GET":
+        form.title.data = note.title
+        form.text.data = note.text
+        form.background_color.data = note.background_color
+    if form.validate_on_submit():
+        note.title = form.title.data
+        note.text = form.text.data
+        note.background_color = form.background_color.data
+        if "background_image" in request.files:
+            # Если юзер загрузил картинку, она получит случайное имя
+            # (во избежание загрузки картинок с одинаковыми названиями)
+            # и сохранится в static/user_images
+            file = request.files["background_image"]
+            filename = secure_filename(file.filename)
+            frmt = filename.split(".")[-1]
+            if frmt in ["jpg", "jpeg", "png", "gif"]:
+                filename = f"{random.randint(1000000, 9999999)}.{frmt}"
+                file.save(os.path.join("static/user_images", filename))
+                note.background_image = f"static/user_images/" f"{filename}"
+        session.commit()
+        return redirect(f"/note/{note_id}/{user_id}")
+    return render_template("edit_note.html", form=form, note=note, title="Заметка")
 
 
 @app.route("/delete_note/<int:note_id>/<int:user_id>")

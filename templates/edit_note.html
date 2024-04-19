@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 align="center">Редактировать заметку</h1>
+<div class="container my-5">
+  <div class="px-2 pt-3 my-5 text-center rounded-3 border shadow-lg"
+       style="background-color: {{ note.background_color }};">
+    <form action="" method="post" enctype="multipart/form-data">
+      {{ form.hidden_tag() }}
+      <p class="col-lg-7 mx-auto display-5 fw-bold text-body-emphasis">
+        {{ form.title.label }}<br>
+        {{ form.title(class="form-control") }}<br>
+        {% for error in form.title.errors %}
+      <div class="alert alert-danger" role="alert">
+        {{ error }}
+      </div>
+      {% endfor %}
+      </p>
+      <p class="col-lg-7 mx-auto display-6 fw-bold text-body-emphasis">
+        {{ form.text.label }}<br>
+        {{ form.text(class="form-control", style="height: 250px;") }}<br>
+        {% for error in form.text.errors %}
+      <div class="alert alert-danger" role="alert">
+        {{ error }}
+      </div>
+      {% endfor %}
+      </p>
+      <p class="col-lg-7 mx-auto fw-bold text-body-emphasis">
+        {{ form.background_image.label }}<br>
+        {{ form.background_image(class="form-control") }}<br>
+        {% for error in form.background_image.errors %}
+      <div class="alert alert-danger" role="alert">
+        {{ error }}
+      </div>
+      {% endfor %}
+      </p>
+      <p class="col-lg-7 mx-auto fw-bold text-body-emphasis">
+        {{ form.background_color.label }}<br>
+        {{ form.background_color(class="form-control") }}<br>
+        {% for error in form.background_color.errors %}
+      <div class="alert alert-danger" role="alert">
+        {{ error }}
+      </div>
+      {% endfor %}
+      </p>
+      <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+      <div>{{ message }}</div>
+    </form>
+  </div>
+</div>
+{% endblock %}

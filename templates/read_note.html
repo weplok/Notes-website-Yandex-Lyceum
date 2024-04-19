@@ -4,7 +4,7 @@
 <div class="container my-5">
   <div class="px-2 pt-3 my-5 text-center rounded-3 border shadow-lg" style="background-color: {{ note.background_color }};">
     <h1 class="display-4 fw-bold text-body-emphasis">{{ note.title }}</h1>
-    <div class="col-lg-6 mx-auto">
+    <div class="col-lg-7 mx-auto">
       <p class="lead mb-4">{{ note.text }}</p>
     </div>
     <div class="overflow-hidden">
@@ -13,6 +13,13 @@
              width="700" height="500" loading="lazy">
       </div>
     </div>
+  </div>
+  <div class="d-grid gap-2" align="center">
+    <a href="/edit_note/{{ note.id }}/{{ current_user.id }}">
+      <button class="btn btn-primary" type="button">
+        <big>Редактировать</big>
+      </button>
+    </a>
   </div>
 </div>
 {% endblock %}
