@@ -4,27 +4,29 @@ from wtforms.validators import DataRequired
 
 
 class RegisterForm(FlaskForm):
-    nick = StringField('Никнейм', validators=[DataRequired()])
-    password = PasswordField('Пароль', validators=[DataRequired()])
-    password_again = PasswordField('Повторите пароль', validators=[DataRequired()])
-    name = StringField('Имя', validators=[DataRequired()])
-    surname = StringField('Фамилия', validators=[DataRequired()])
+    nick = StringField("Никнейм", validators=[DataRequired()])
+    password = PasswordField("Пароль", validators=[DataRequired()])
+    password_again = PasswordField("Повторите пароль", validators=[DataRequired()])
+    name = StringField("Имя", validators=[DataRequired()])
+    surname = StringField("Фамилия", validators=[DataRequired()])
 
-    submit = SubmitField('Зарегистрироваться')
+    submit = SubmitField("Зарегистрироваться")
 
 
 class LoginForm(FlaskForm):
-    nick = StringField('Никнейм', validators=[DataRequired()])
-    password = PasswordField('Пароль', validators=[DataRequired()])
-    remember_me = BooleanField('Запомнить меня')
+    nick = StringField("Никнейм", validators=[DataRequired()])
+    password = PasswordField("Пароль", validators=[DataRequired()])
+    remember_me = BooleanField("Запомнить меня")
 
-    submit = SubmitField('Войти')
+    submit = SubmitField("Войти")
 
 
 class EditProfileForm(FlaskForm):
-    name = StringField('Имя', validators=[DataRequired()])
-    surname = StringField('Фамилия', validators=[DataRequired()])
-    background_color = ColorField('Вы можете изменить цвет фона на сайте')
-    notes_background_color = ColorField('Вы можете изменить стандартный цвет фона заметки')
+    name = StringField("Имя", validators=[DataRequired()])
+    surname = StringField("Фамилия", validators=[DataRequired()])
+    background_color = ColorField("Вы можете изменить цвет фона на сайте")
+    notes_background_color = ColorField(
+        "Вы можете изменить стандартный цвет фона заметки"
+    )
 
-    submit = SubmitField('Изменить данные')
+    submit = SubmitField("Изменить данные")

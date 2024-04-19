@@ -15,9 +15,14 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 import sys
-sys.path.insert(0, '/home/maxim/PycharmProjects/LyceumProjects/FinalProject/Notes-website-Yandex-Lyceum')
+
+sys.path.insert(
+    0,
+    "/home/maxim/PycharmProjects/LyceumProjects/FinalProject/Notes-website-Yandex-Lyceum",
+)
 from data.db_session import SqlAlchemyBase
 import data.__all_models
+
 target_metadata = SqlAlchemyBase.metadata
 
 # other values from the config, defined by the needs of env.py,
@@ -64,9 +69,7 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()
