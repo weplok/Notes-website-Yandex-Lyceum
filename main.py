@@ -164,7 +164,7 @@ def edit_profile(user_id):
         user.notes_background_color = form.notes_background_color.data
         session.commit()
         return redirect("/")
-    return render_template("edit_profile.html", title="Профиль", form=form)
+    return render_template("edit_profile.html", title="Профиль", nick=user.nick, form=form)
 
 
 @app.route("/create_note", methods=["GET", "POST"])
