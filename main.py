@@ -64,14 +64,19 @@ def index():
     # Если авторизован - покажем кастомную страницу с заметками пользователя
     notes = requests.get("http://localhost:5000/api/notes").json()["notes"]
 
+    user_notes = []
+    for note in notes:
+        if note["owner_user"] == user.id:
+            user_notes.append(note)
+
     # Булевая функция. True, если есть скрытые заметки,
     # чтобы на странице отобразить текст "Скрытые заметки"
-    is_hide_notes = not all([note["is_active"] for note in notes]) and len(notes) != 0
+    is_hide_notes = not all([note["is_active"] for note in user_notes]) and len(user_notes) != 0
 
     return render_template(
         "notes.html",
         user=current_user,
-        notes=notes,
+        notes=user_notes,
         is_hide_notes=is_hide_notes,
         title="Заметки",
     )
