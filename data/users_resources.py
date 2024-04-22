@@ -21,8 +21,6 @@ parser.add_argument("name", required=True)
 parser.add_argument("surname", required=True)
 parser.add_argument("nick", required=True)
 parser.add_argument("password", required=True)
-parser.add_argument("background_color", required=True)
-parser.add_argument("notes_background_color", required=True)
 
 
 def abort_if_user_not_found(user_id):
@@ -62,7 +60,7 @@ class UsersListResource(Resource):
             surname=str(args["surname"]),
             name=str(args["name"]),
         )
-        user.set_password(args["password"])
+        user.set_password(str(args["password"]))
         session.add(user)
         session.commit()
         return jsonify({"id": user.id})
