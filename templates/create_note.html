@@ -19,7 +19,7 @@
       </p>
       <p>
         {{ form.text.label }}<br>
-        {{ form.text(class="form-control") }}<br>
+        {{ form.text(class="form-control", style="height: 250px") }}<br>
         {% for error in form.text.errors %}
       <p class="alert alert-danger" role="alert">
         {{ error }}
